@@ -66,7 +66,7 @@ func (h *ReserveHandler) PostReserve(c *gin.Context) {
 // GetReserves возвращает все резервы пользователя
 func (h *ReserveHandler) GetReserves(c *gin.Context) {
 	userID := c.Param("user_id")
-
+	itemID := c.Param("item_id")
 	// Конвертируем userID в int64
 	var idUser int64
 	if _, err := fmt.Sscanf(userID, "%d", &idUser); err != nil {
@@ -75,8 +75,15 @@ func (h *ReserveHandler) GetReserves(c *gin.Context) {
 		})
 		return
 	}
+	var idItem int64
+	if _, err := fmt.Sscanf(itemID, "%d", &idItem); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid item ID",
+		})
+		return
+	}
 
-	reserves, err := h.reserveService.GetUserReserves(c.Request.Context(), idUser)
+	reserves, err := h.reserveService.GetUserReserves(c.Request.Context(), idUser, idItem)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

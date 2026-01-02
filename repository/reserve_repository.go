@@ -35,10 +35,10 @@ func (r *ReserveRepository) FindByID(ctx context.Context, id int64) (*models.Res
 	return &reserve, err
 }
 
-func (r *ReserveRepository) FindByUserID(ctx context.Context, userID int64) ([]models.Reserve, error) {
+func (r *ReserveRepository) FindByUserID(ctx context.Context, userID int64, itemID int64) ([]models.Reserve, error) {
 	var reserves []models.Reserve
 	err := r.db.WithContext(ctx).
-		Where("id_user = ?", userID).
+		Where("id_user = ? AND id_item = ?", userID, itemID). // ← Исправлено
 		Order("created_at DESC").
 		Find(&reserves).Error
 	return reserves, err

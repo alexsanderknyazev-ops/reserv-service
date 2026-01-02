@@ -51,8 +51,8 @@ func (s *ReserveService) CreateReserve(ctx context.Context, req models.ReserveRe
 	return reserve, nil
 }
 
-func (s *ReserveService) GetUserReserves(ctx context.Context, userID int64) ([]models.Reserve, error) {
-	return s.repo.FindByUserID(ctx, userID)
+func (s *ReserveService) GetUserReserves(ctx context.Context, userID int64, itemID int64) ([]models.Reserve, error) {
+	return s.repo.FindByUserID(ctx, userID, itemID)
 }
 
 func (s *ReserveService) CancelReserve(ctx context.Context, reserveID int64) error {
